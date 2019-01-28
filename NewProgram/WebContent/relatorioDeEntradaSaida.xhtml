@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:p="http://primefaces.org/ui"
+	lang="pt-br">
+
+		<ui:composition template="layout.xhtml">
+		<ui:param name="title" value="Relatório de Entradas e Saídas" />
+			<ui:define name="conteudo">
+			<f:metadata>
+				<f:viewParam name="id" value="#{relatorioEntradaSaidaBean.id}" />
+				<f:viewAction action="#{relatorioEntradaSaidaBean.carregarCliente}" />
+			</f:metadata>
+				
+				<form jsf:id="form">
+					<fieldset>				
+						<legend>Dados de Entradas e Saídas</legend>
+						<label for="id">Matrícula:</label><br />
+						<input type="text" jsf:value="#{relatorioEntradaSaidaBean.id}" id="id" /><br />
+		
+						<label for="dataInicial">Data Inicial:</label><br />
+						<input type="date" jsf:value="#{relatorioEntradaSaidaBean.dataInicial}" id="dataInicial"><br />
+							<f:convertDateTime type="localDate" pattern="yyyy-MM-dd" />
+						</input><br />
+							
+						<label for="dataFinal">Data Final:</label><br />
+						<input type="date" jsf:value="#{relatorioEntradaSaidaBean.dataFinal}" id="dataFinal"><br />
+							<f:convertDateTime type="localDate" pattern="yyyy-MM-dd" />
+						</input><br />
+							
+					</fieldset>
+					<br />
+					
+					<input type="submit" value="Gerar Relatório" jsf:action="#{relatorioEntradaSaidaBean.gerarRelatorio}" />
+				
+					<h:panelGroup rendered="#{not empty relatorioEntradaSaidaBean.acessos}">
+						<table>
+							<tr>
+								<th>Matrícula</th>
+								<th>Nome</th>
+								<th>Entrada</th>
+								<th>Saída</th>
+								<th>Duração</th>
+							</tr>
+							<ui:repeat var="c" value="#{relatorioEntradaSaidaBean.acessos}">
+								<tr>
+									<td>#{c.cliente.id}</td>
+									<td>#{c.cliente.nome}</td>
+									<td>
+
+										<h:outputText value="#{c.entrada}">
+											<f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy HH:mm" />
+										</h:outputText>
+									</td>
+									<td>
+										<h:outputText value="#{c.saida}">
+											<f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy HH:mm" />
+										</h:outputText>
+								</td>
+									<td>#{c.calcularDuracao()}</td>
+								</tr>	
+							</ui:repeat>				
+						</table>
+					</h:panelGroup>
+				</form>	
+			</ui:define>
+		</ui:composition>
+</html>	

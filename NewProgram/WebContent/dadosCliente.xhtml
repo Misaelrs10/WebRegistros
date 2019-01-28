@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:p="http://primefaces.org/ui"
+	lang="pt-br">
+
+		<ui:composition template="layout.xhtml">
+		<ui:param name="title" value="#{clienteBean.titulo}" />
+			<f:metadata>
+				<f:viewParam name="id" value="#{clienteBean.id}" />
+				<f:viewAction action="#{clienteBean.carregar}" />
+			</f:metadata>
+			<ui:define name="conteudo">
+				
+				<form jsf:id="form">
+					<input type="hidden" jsf:value="#{clienteBean.cliente.id}" />
+					
+					<fieldset>				
+						<legend>Dados Pessoais</legend>
+						<label for="nome">Nome:</label><br />
+						<input type="text" jsf:value="#{clienteBean.cliente.nome}" id="nome" maxlength="64" jsf:label="Nome"><br />
+							<f:validateLength minumum="2" maximum="64" />
+						</input><br />
+										
+						<label for="cpf">CPF:</label><br />
+						<input type="text" jsf:value="#{clienteBean.cliente.cpf}" id="cpf" maxlength="11" jsf:label="CPF" >
+							<f:validateRequired />
+							<f:validateLongRange minimum="1" maximum="99999999999" />
+						</input><br />
+						
+						<label for="dataDeNascimento">Data de Nascimento:</label><br />
+						<input type="date" jsf:value="#{clienteBean.cliente.dataNascimento}" id="dataDeNascimento">
+							<f:convertDateTime type="localDate" pattern="yyyy-MM-dd" />
+						</input><br />
+																
+						<label for="sexo">Sexo:</label><br />
+						<select jsf:value="#{clienteBean.cliente.sexo}" id="sexo" size="0">
+							<f:selectItems value="#{dataBean.sexos}" />
+						</select><br />						
+						
+						<label for="celular">Celular:</label><br />
+						<input type="celular" jsf:value="#{clienteBean.cliente.celular}" id="celular" maxlength="11" jsf:label="Celular">
+							<f:validateRequired />
+							<f:validateLongRange minimum="1" maximum="99999999999" />
+							<p:inputMask value="#{mascara.celular}" mask="(99)99999-9999" />	
+						</input><br />
+						
+						<label for="email">Email:</label><br />
+						<input type="email" jsf:value="#{clienteBean.cliente.email}" id="email" maxlength="64" jsf:label="E-mail"><br />
+							<f:validateLength minumum="20" maximum="64" />
+							<f:validateRegex pattern=".+@.+" />
+						</input><br />
+					</fieldset>
+					
+					<br />
+										
+					<fieldset>		
+						<legend>Endereço</legend>
+						<label for="rua">Rua:</label><br />
+						<input type="text" jsf:value="#{clienteBean.cliente.endereco.rua}" id="rua" maxlength="128" jsf:label="Rua"><br />
+							<f:validateLength minumum="2" maximum="128" />
+						</input><br />
+									
+						<label for="numero">Número:</label><br />
+						<input type="text" jsf:value="#{clienteBean.cliente.endereco.numero}" id="numero" maxlength="6" jsf:label="Numero"><br />
+							<f:validateLongRange minumum="1" maximum="999999" />
+						</input><br />
+									
+						<label for="complemento">Complemento:</label><br />
+						<input type="text" jsf:value="#{clienteBean.cliente.endereco.complemento}" id="complemento" maxlength="32" jsf:label="Complemento"><br />
+							<f:validateLength maximum="32" />
+						</input><br />
+												
+						<label for="cep">CEP</label><br />
+						<input type="text" jsf:value="#{clienteBean.cliente.endereco.cep}" id="cep" maxlength="8" jsf:label="CEP">
+							<f:validateRequired />
+							<f:validateLongRange minimum="10000000" maximum="99999999" />
+						</input><br />
+						
+						<label for="cidade">Cidade:</label><br />
+						<input type="text" jsf:value="#{clienteBean.cliente.endereco.cidade}" id="cidade" maxlength="64" jsf:label="Cidade"><br />
+							<f:validateLength minumum="2" maximum="64" />
+						</input><br />
+						
+						<label for="estado">Estado:</label><br />
+						<select jsf:value="#{clienteBean.cliente.endereco.estado.sigla}" id="estado" size="0">
+							<f:selectItem itemLabel="Escolha..." itemValue="" />
+							<f:selectItems value="#{dataBean.estados}" var="e" itemLabel="#{e.nome}" itemValue="#{e.sigla}" />
+			
+						</select><br />
+					</fieldset>	
+					
+					<br />
+					
+					<fieldset>		
+						<legend>Situação</legend>
+						<label for="situacao"> Situação:</label><br />
+						<select jsf:value="#{clienteBean.cliente.situacao}" id="situacao" size="0">
+							<f:selectItems value="#{dataBean.situacoes}" />
+						</select>				
+					</fieldset>
+
+					<br />
+					
+					<input type="submit" value="Gravar" jsf:action="#{clienteBean.gravar}"/>&#160;
+					<input type="button" value="Relatório de entradas e saídas" 
+					jsf:outcome="relatorioDeEntradaSaida?id=#{clienteBean.cliente.id}" 
+					jsf:rendered="#{clienteBean.id != null}" />
+						
+				</form>
+		
+			</ui:define>
+		</ui:composition>
+</html>		
