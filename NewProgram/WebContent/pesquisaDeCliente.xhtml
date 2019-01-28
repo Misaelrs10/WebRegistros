@@ -56,7 +56,7 @@
 								<td>#{c.situacao}</td>
 								<td>
 									<input type="button" value="Editar" jsf:outcome="dadosCliente?id=#{c.id}" />&#160;
-									<input type="submit" value="Excluir" onclick="return confirm('Deseja excluir o cliente #{c.id}?');" jsf:action="#{pesquisaClienteBean.excluir(c.id)}" />
+									<input type="submit" value="Excluir" onclick="return confirm('Deseja excluir o cliente: #{c.nome}?');" jsf:action="#{pesquisaClienteBean.excluir(c.id)}" />
 								</td>
 							</tr>
 							</ui:repeat>	
